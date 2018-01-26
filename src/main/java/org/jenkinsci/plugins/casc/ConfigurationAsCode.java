@@ -81,7 +81,7 @@ public class ConfigurationAsCode extends Plugin {
     }
 
     public static List<InputStream> getConfigurationInput(String configPath) throws IOException {
-        List<InputStream> is = new ArrayList<>();
+        List<InputStream> is = new LinkedList<>();
         //Default
         if(StringUtils.isBlank(configPath)) {
             File defaultConfig = new File("./jenkins.yaml");
@@ -94,7 +94,12 @@ public class ConfigurationAsCode extends Plugin {
             File cfg = new File(configPath);
             if(cfg.isDirectory()) {
                 for(File cfgFile : FileUtils.listFiles(cfg, new String[]{"yml","yaml"},true)) {
-                    is.add(new FileInputStream(cfgFile));
+                    //We should ALWAYS execute plugins.yml first if pointing to a directory. This should setup plugins
+                    if(cfgFile.getName().equals("plugins.yml") || cfgFile.getName().equals("plugins.yaml")) {
+                        ((LinkedList<InputStream>) is).addFirst(new FileInputStream(cfgFile));
+                    } else {
+                        ((LinkedList<InputStream>) is).addLast(new FileInputStream(cfgFile));
+                    }
                 }
             } else {
                 is = Arrays.asList(new FileInputStream(cfg));
