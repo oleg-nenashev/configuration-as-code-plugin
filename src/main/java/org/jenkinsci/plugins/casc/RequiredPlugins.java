@@ -10,8 +10,10 @@ import java.util.Map;
  */
 public class RequiredPlugins extends HashMap<String,VersionNumber> {
     public RequiredPlugins(Map<String,Map> requiredPlugins) {
-        for(Map.Entry<String,Map> e : requiredPlugins.entrySet()) {
-            put(e.getKey(), new VersionNumber((String)e.getValue().get("version")));
+        if(requiredPlugins != null) {
+            for (Map.Entry<String, Map> e : requiredPlugins.entrySet()) {
+                put(e.getKey(), new VersionNumber((String) e.getValue().get("version")));
+            }
         }
     }
 }
