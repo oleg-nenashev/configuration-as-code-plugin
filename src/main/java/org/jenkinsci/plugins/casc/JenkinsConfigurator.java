@@ -10,6 +10,7 @@ import javaposse.jobdsl.plugin.JenkinsJobManagement;
 import javaposse.jobdsl.plugin.LookupStrategy;
 import jenkins.model.GlobalConfigurationCategory;
 import jenkins.model.Jenkins;
+import org.jenkinsci.plugins.casc.*;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,6 @@ public class JenkinsConfigurator extends BaseConfigurator<Jenkins> implements Ro
     public Jenkins configure(Object c) throws Exception {
         Map config = (Map) c;
         Jenkins jenkins = Jenkins.getInstance();
-
         configure(config, jenkins);
         return jenkins;
     }

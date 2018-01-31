@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by mads on 1/31/18.
  */
-public class PluginInstallConfiguratorTest {
+public class PluginConfiguratorTest {
 
     @Rule
     public JenkinsRule rule = new JenkinsRule();

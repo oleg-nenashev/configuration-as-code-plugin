@@ -1,4 +1,4 @@
-package org.jenkinsci.plugins.casc;
+package org.jenkinsci.plugins.casc.plugins;
 
 import hudson.model.UpdateSite;
 

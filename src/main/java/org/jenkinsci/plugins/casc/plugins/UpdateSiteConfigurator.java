@@ -1,6 +1,7 @@
-package org.jenkinsci.plugins.casc;
+package org.jenkinsci.plugins.casc.plugins;
 
 import hudson.Extension;
+import org.jenkinsci.plugins.casc.BaseConfigurator;
 
 import java.util.Map;
 

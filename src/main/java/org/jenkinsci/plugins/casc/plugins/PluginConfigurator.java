@@ -1,4 +1,4 @@
-package org.jenkinsci.plugins.casc;
+package org.jenkinsci.plugins.casc.plugins;
 
 import hudson.Extension;
 import hudson.PluginManager;
@@ -8,23 +8,23 @@ import hudson.model.UpdateSite;
 import hudson.util.VersionNumber;
 import jenkins.model.Jenkins;
 import org.apache.commons.lang.StringUtils;
-import sun.misc.Version;
+import org.jenkinsci.plugins.casc.Attribute;
+import org.jenkinsci.plugins.casc.Configurator;
+import org.jenkinsci.plugins.casc.RootElementConfigurator;
+import org.jenkinsci.plugins.casc.plugins.RequiredPlugins;
+import org.jenkinsci.plugins.casc.plugins.UpdateSiteInfo;
 
-import java.io.StringWriter;
 import java.util.*;
 
 /**
  * Created by mads on 1/29/18.
  */
 @Extension(ordinal = Double.MAX_VALUE)
-public class PluginInstallConfigurator implements RootElementConfigurator {
+public class PluginConfigurator implements RootElementConfigurator {
 
     @Override
     public PluginManager configure(Object config) throws Exception {
         Map<?,?> map = (Map) config;
-        Configurator<ProxyConfiguration> pc = Configurator.lookup(ProxyConfiguration.class);
-        ProxyConfiguration pcc = pc.configure(map.get("proxy"));
-        Jenkins.getInstance().proxy = pcc;
 
         HashMap<String, UpdateSite> allUpdateSites = new HashMap<>();
         Configurator<UpdateSiteInfo> configUpdateInfo = Configurator.lookup(UpdateSiteInfo.class);
