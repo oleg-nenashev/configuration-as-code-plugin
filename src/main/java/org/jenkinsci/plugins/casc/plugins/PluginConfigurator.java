@@ -25,6 +25,10 @@ public class PluginConfigurator implements RootElementConfigurator {
     @Override
     public PluginManager configure(Object config) throws Exception {
         Map<?,?> map = (Map) config;
+        Configurator<ProxyConfiguration> pc = Configurator.lookup(ProxyConfiguration.class);
+        ProxyConfiguration pcc = pc.configure(map.get("proxy"));
+        Jenkins.getInstance().proxy = pcc;
+
 
         HashMap<String, UpdateSite> allUpdateSites = new HashMap<>();
         Configurator<UpdateSiteInfo> configUpdateInfo = Configurator.lookup(UpdateSiteInfo.class);

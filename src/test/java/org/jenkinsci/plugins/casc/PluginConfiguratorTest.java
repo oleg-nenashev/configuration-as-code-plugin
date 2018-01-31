@@ -17,7 +17,7 @@ public class PluginConfiguratorTest {
 
     @Test
     public void test_that_proxy_is_configured() throws Exception {
-        ConfigurationAsCode.configure(getClass().getResourceAsStream("PluginInstallTest.yml"));
+        ConfigurationAsCode.configure(getClass().getResourceAsStream("PluginTest.yml"));
         assertEquals("proxy.acme.com", Jenkins.getInstance().proxy.name);
         assertEquals(9090, Jenkins.getInstance().proxy.port);
         assertEquals("bar", Jenkins.getInstance().proxy.getPassword());
