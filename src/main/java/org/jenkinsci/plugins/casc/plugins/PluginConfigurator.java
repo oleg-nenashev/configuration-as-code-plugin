@@ -25,10 +25,11 @@ public class PluginConfigurator implements RootElementConfigurator {
     @Override
     public PluginManager configure(Object config) throws Exception {
         Map<?,?> map = (Map) config;
-        Configurator<ProxyConfiguration> pc = Configurator.lookup(ProxyConfiguration.class);
-        ProxyConfiguration pcc = pc.configure(map.get("proxy"));
-        Jenkins.getInstance().proxy = pcc;
-
+        if(map.containsKey("proxy")) {
+            Configurator<ProxyConfiguration> pc = Configurator.lookup(ProxyConfiguration.class);
+            ProxyConfiguration pcc = pc.configure(map.get("proxy"));
+            Jenkins.getInstance().proxy = pcc;
+        }
 
         HashMap<String, UpdateSite> allUpdateSites = new HashMap<>();
         Configurator<UpdateSiteInfo> configUpdateInfo = Configurator.lookup(UpdateSiteInfo.class);
@@ -51,8 +52,7 @@ public class PluginConfigurator implements RootElementConfigurator {
         //Add ones from configuration
         sites.addAll(allUpdateSites.values());
         Jenkins.getInstance().save();
-
-        //Jenkins.getInstance().getPluginManager().doCheckUpdatesServer();
+        Jenkins.getInstance().getPluginManager().doCheckUpdatesServer();
 
         //Do check to see if we have installed the required plugins
         StringBuilder missingPlugins = new StringBuilder();
@@ -62,6 +62,7 @@ public class PluginConfigurator implements RootElementConfigurator {
             PluginWrapper plugin = Jenkins.getInstance().getPluginManager().getPlugin(requiredPlugin.getKey());
             if(plugin == null) {
                 missingPlugins.append("Missing plugin: "+requiredPlugin.getKey()+"\n");
+
             } else if (plugin.getVersionNumber().isOlderThan(requiredPlugin.getValue())) {
                 missingPlugins.append(String.format("Required plugin %s(%s) is older than the required version: %s",
                         plugin.getShortName(),

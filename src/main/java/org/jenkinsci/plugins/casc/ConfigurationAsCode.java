@@ -80,7 +80,7 @@ public class ConfigurationAsCode extends Plugin {
         }
     }
 
-    public static LinkedList<InputStream> getConfigurationInput(String configPath) throws IOException {
+    public static List<InputStream> getConfigurationInput(String configPath) throws IOException {
         LinkedList<InputStream> is = new LinkedList<>();
         //Default
         if(StringUtils.isBlank(configPath)) {

@@ -11,8 +11,10 @@ import java.util.Map;
 public class UpdateSiteInfo extends HashMap<String, UpdateSite> {
 
     public UpdateSiteInfo(Map<String,Map> config) {
-        for(Map.Entry<String,Map> e : config.entrySet()) {
-            put(e.getKey(), new UpdateSite(e.getKey(), (String)(e.getValue()).get("url")));
+        if(config != null) {
+            for (Map.Entry<String, Map> e : config.entrySet()) {
+                put(e.getKey(), new UpdateSite(e.getKey(), (String) (e.getValue()).get("url")));
+            }
         }
     }
 }
