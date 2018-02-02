@@ -1,5 +1,6 @@
 package org.jenkinsci.plugins.casc.plugins;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.PluginManager;
 import hudson.PluginWrapper;
@@ -97,6 +98,7 @@ public class PluginConfigurator implements RootElementConfigurator {
      * @return
      */
     @Override
+    @SuppressFBWarnings(value="DM_NEW_FOR_GETCLASS", justification="one can't get a parameterized type .class")
     public Set<Attribute> describe() {
         Set<Attribute> attr =  new HashSet<Attribute>();
         attr.add(new Attribute("proxy", ProxyConfiguration.class));
