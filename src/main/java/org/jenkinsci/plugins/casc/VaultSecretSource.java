@@ -25,7 +25,6 @@ public class VaultSecretSource extends SecretSource {
     public VaultSecretSource() {
         //TODO: Those should probably be stored somewhere safe!...howto?
         String vaultPw = System.getenv("CASC_VAULT_PW");
-
         String vaultUsr = System.getenv("CASC_VAULT_USER");
         String vaultPth = System.getenv("CASC_VAULT_PATH");
         String vaultUrl = System.getenv("CASC_VAULT_URL");

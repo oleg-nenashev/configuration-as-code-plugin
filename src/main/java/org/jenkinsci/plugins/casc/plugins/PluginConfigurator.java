@@ -11,8 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.casc.Attribute;
 import org.jenkinsci.plugins.casc.Configurator;
 import org.jenkinsci.plugins.casc.RootElementConfigurator;
-import org.jenkinsci.plugins.casc.plugins.RequiredPlugins;
-import org.jenkinsci.plugins.casc.plugins.UpdateSiteInfo;
 
 import java.util.*;
 
@@ -25,6 +23,8 @@ public class PluginConfigurator implements RootElementConfigurator {
     @Override
     public PluginManager configure(Object config) throws Exception {
         Map<?,?> map = (Map) config;
+
+        //Proxy is optional
         if(map.containsKey("proxy")) {
             Configurator<ProxyConfiguration> pc = Configurator.lookup(ProxyConfiguration.class);
             ProxyConfiguration pcc = pc.configure(map.get("proxy"));
@@ -52,11 +52,18 @@ public class PluginConfigurator implements RootElementConfigurator {
         //Add ones from configuration
         sites.addAll(allUpdateSites.values());
         Jenkins.getInstance().save();
-        Jenkins.getInstance().getPluginManager().doCheckUpdatesServer();
 
         //Do check to see if we have installed the required plugins
         StringBuilder missingPlugins = new StringBuilder();
-        RequiredPlugins requiredPlugins = new RequiredPlugins((Map<String,Map>)map.get("required"));
+        Configurator<VersionNumber> vnc = Configurator.lookup(VersionNumber.class);
+        HashMap<String,VersionNumber> requiredPlugins = new HashMap<>();
+
+        //Required plugins list is optional
+        if(map.containsKey("required")) {
+            for (Map.Entry reqPlug : ((Map<?, ?>) map.get("required")).entrySet()) {
+                requiredPlugins.put((String) reqPlug.getKey(), vnc.configure(reqPlug.getValue()));
+            }
+        }
 
         for(Map.Entry<String,VersionNumber> requiredPlugin : requiredPlugins.entrySet()) {
             PluginWrapper plugin = Jenkins.getInstance().getPluginManager().getPlugin(requiredPlugin.getKey());
@@ -93,8 +100,8 @@ public class PluginConfigurator implements RootElementConfigurator {
     public Set<Attribute> describe() {
         Set<Attribute> attr =  new HashSet<Attribute>();
         attr.add(new Attribute("proxy", ProxyConfiguration.class));
-        attr.add(new Attribute("updateSites", UpdateSiteInfo.class));
-        attr.add(new Attribute("required", RequiredPlugins.class));
+        attr.add(new Attribute("updateSites", new HashMap<String,UpdateSite>().getClass()));
+        attr.add(new Attribute("required", new HashMap<String,VersionNumber>().getClass()));
         return attr;
     }
 }
